@@ -23,7 +23,7 @@ publishing {
     repositories {
         maven {
             name = "IzzelAliz"
-            url = uri("http://localhost/releases")
+            url = uri("https://maven.izzel.io/releases")
             credentials {
                 username = project.findProperty("mavenUser") ?: System.getenv("USERNAME")
                 password = project.findProperty("mavenToken") ?: System.getenv("TOKEN")
