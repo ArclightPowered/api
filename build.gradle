@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+}
+
+group 'io.izzel.arclight'
+version '1.0.0'
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/' }
+    maven { url = 'https://files.minecraftforge.net/maven/' }
+}
+
+dependencies {
+    compileOnly "org.ow2.asm:asm:9.0"
+    compileOnly "org.ow2.asm:asm-tree:9.0"
+    compileOnly "org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT"
+    compileOnly "net.minecraftforge:eventbus:4.0.0"
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "IzzelAliz"
+            url = uri("http://localhost/releases")
+            credentials {
+                username = project.findProperty("mavenUser") ?: System.getenv("USERNAME")
+                password = project.findProperty("mavenToken") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
