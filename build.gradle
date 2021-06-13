@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.izzel.arclight'
-version '1.0.0'
+version '1.0.1'
 
 repositories {
     mavenCentral()
@@ -17,6 +17,10 @@ dependencies {
     compileOnly "org.ow2.asm:asm-tree:9.0"
     compileOnly "org.spigotmc:spigot-api:1.17-R0.1-SNAPSHOT"
     compileOnly "net.minecraftforge:eventbus:4.0.0"
+}
+
+compileJava {
+    sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
 }
 
 publishing {
