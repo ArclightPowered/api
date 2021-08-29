@@ -31,6 +31,18 @@ public interface PluginPatcher {
         return 0;
     }
 
+    /**
+     * Returns the version of plugin patcher.
+     * <p>
+     * Changes to this version string and/or main class name could cause an invalidation to plugin class cache.
+     *
+     * @return the patcher version. Defaults to "unknown".
+     */
+    default String version() {
+        String implVersion = getClass().getPackage().getImplementationVersion();
+        return implVersion == null ? "unknown" : implVersion;
+    }
+
     interface ClassRepo {
 
         /**

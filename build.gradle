@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.izzel.arclight'
-version '1.0.1'
+version '1.1.0'
 
 repositories {
     mavenCentral()
@@ -21,6 +21,11 @@ dependencies {
 
 compileJava {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+java {
+    withSourcesJar()
+    withJavadocJar()
 }
 
 publishing {
