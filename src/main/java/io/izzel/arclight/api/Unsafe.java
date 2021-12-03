@@ -423,16 +423,49 @@ public class Unsafe {
     }
 
     public static Class<?> getCallerClass() {
-        return INSTANCE.getClassContext()[3];
+        return INSTANCE.getCallerClass();
     }
 
-    private static final CallerClass INSTANCE = new CallerClass();
+    private static final CallerClass INSTANCE;
 
-    private static class CallerClass extends SecurityManager {
+    static {
+        boolean securityManagerPresent = false;
+        try {
+            Class.forName("java.lang.SecurityManager");
+            securityManagerPresent = true;
+        } catch (Throwable ignored) {}
+        if (securityManagerPresent) {
+            INSTANCE = new SecurityManagerCallerClass();
+        } else {
+            INSTANCE = new StackWalkerCallerClassimplements();
+        }
+    }
+
+    private static class SecurityManagerCallerClass extends SecurityManager implements CallerClass {
 
         @Override
         public Class<?>[] getClassContext() {
             return super.getClassContext();
         }
+
+        @Override
+        public Class<?> getCallerClass() {
+            return super.getClassContext()[2];
+        }
+    }
+
+    private static class StackWalkerCallerClassimplements implements CallerClass {
+
+        private final StackWalker walker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
+
+        @Override
+        public Class<?> getCallerClass() {
+            return walker.walk(s -> s.skip(2).findFirst().orElseThrow().getDeclaringClass());
+        }
+    }
+
+    private interface CallerClass {
+
+        Class<?> getCallerClass();
     }
 }
