@@ -482,7 +482,7 @@ public class Unsafe {
 
         @Override
         public Class<?> getCallerClass() {
-            return super.getClassContext()[2];
+            return super.getClassContext()[3];
         }
     }
 
@@ -492,7 +492,7 @@ public class Unsafe {
 
         @Override
         public Class<?> getCallerClass() {
-            return walker.walk(s -> s.skip(2).findFirst().orElseThrow().getDeclaringClass());
+            return walker.walk(s -> s.skip(3).findFirst().orElseThrow().getDeclaringClass());
         }
     }
 
