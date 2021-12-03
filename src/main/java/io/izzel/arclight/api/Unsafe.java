@@ -1,7 +1,11 @@
 package io.izzel.arclight.api;
 
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
@@ -270,8 +274,36 @@ public class Unsafe {
         }
     }
 
+    private static final MethodHandle H_DEF_CLASS;
+
+    static {
+        MethodHandle handle;
+        try {
+            handle = lookup().findStatic(ClassLoader.class, "defineClass0", MethodType.methodType(Class.class,
+                ClassLoader.class, Class.class, String.class, byte[].class, int.class, int.class, ProtectionDomain.class,
+                boolean.class, int.class, Object.class));
+        } catch (Throwable t) {
+            handle = null;
+        }
+        H_DEF_CLASS = handle;
+    }
+
+    public static Class<?> defineAnonymousClass(Class<?> aClass, byte[] bytes) {
+        return unsafe.defineAnonymousClass(aClass, bytes, null);
+    }
+
     public static Class<?> defineAnonymousClass(Class<?> aClass, byte[] bytes, Object[] objects) {
-        return unsafe.defineAnonymousClass(aClass, bytes, objects);
+        if (H_DEF_CLASS != null) {
+            try {
+                return (Class<?>) H_DEF_CLASS.invokeExact(aClass.getClassLoader(), aClass, new ClassReader(bytes).getClassName(),
+                    bytes, 0, bytes.length, aClass.getProtectionDomain(), false, 11, (Object) objects);
+            } catch (Throwable t) {
+                throwException(t);
+                return null;
+            }
+        } else {
+            return unsafe.defineAnonymousClass(aClass, bytes, objects);
+        }
     }
 
     public static Object allocateInstance(Class<?> aClass) throws InstantiationException {
