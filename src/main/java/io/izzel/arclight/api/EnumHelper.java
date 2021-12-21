@@ -71,23 +71,32 @@ public class EnumHelper {
         }
     }
 
-    private static long enumConstantDirectoryOffset;
-    private static long enumConstantsOffset;
+    private static final long[] ENUM_CACHE_OFFSETS;
 
     static {
-        try {
-            Field enumConstantDirectory = Class.class.getDeclaredField("enumConstantDirectory");
-            Field enumConstants = Class.class.getDeclaredField("enumConstants");
-            enumConstantDirectoryOffset = Unsafe.objectFieldOffset(enumConstantDirectory);
-            enumConstantsOffset = Unsafe.objectFieldOffset(enumConstants);
-        } catch (NoSuchFieldException e) {
-            throw new IllegalStateException(e);
+        List<Long> offsets = new ArrayList<>();
+        for (var s : new String[]{"enumConstantDirectory", "enumConstants", "enumVars"}) {
+            try {
+                Field field = Class.class.getDeclaredField(s);
+                offsets.add(Unsafe.objectFieldOffset(field));
+                System.out.println(field);
+            } catch (NoSuchFieldException ignored) {
+            }
         }
+        if (offsets.isEmpty()) {
+            throw new IllegalStateException("Unable to find offsets for Enum");
+        }
+        var arr = new long[offsets.size()];
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = offsets.get(i);
+        }
+        ENUM_CACHE_OFFSETS = arr;
     }
 
     private static void reset(Class<?> cl) {
-        Unsafe.putObject(cl, enumConstantDirectoryOffset, null);
-        Unsafe.putObject(cl, enumConstantsOffset, null);
+        for (long offset : ENUM_CACHE_OFFSETS) {
+            Unsafe.putObjectVolatile(cl, offset, null);
+        }
     }
 
 }

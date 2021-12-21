@@ -289,7 +289,7 @@ public class Unsafe {
     }
 
     public static Class<?> defineAnonymousClass(Class<?> aClass, byte[] bytes) {
-        return unsafe.defineAnonymousClass(aClass, bytes, null);
+        return defineAnonymousClass(aClass, bytes, null);
     }
 
     public static Class<?> defineAnonymousClass(Class<?> aClass, byte[] bytes, Object[] objects) {
