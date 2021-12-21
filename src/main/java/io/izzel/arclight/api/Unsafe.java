@@ -9,6 +9,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
+import java.util.List;
 import java.util.Objects;
 
 @SuppressWarnings("all")
@@ -283,7 +284,14 @@ public class Unsafe {
                 ClassLoader.class, Class.class, String.class, byte[].class, int.class, int.class, ProtectionDomain.class,
                 boolean.class, int.class, Object.class));
         } catch (Throwable t) {
-            handle = null;
+            try {
+                handle = MethodHandles.dropArguments(
+                    lookup().findVirtual(ClassLoader.class, "defineClassInternal", MethodType.methodType(Class.class,
+                        Class.class, String.class, byte[].class, ProtectionDomain.class, boolean.class, int.class, Object.class)),
+                    4, List.of(int.class, int.class));
+            } catch (Throwable t2) {
+                handle = null;
+            }
         }
         H_DEF_CLASS = handle;
     }
