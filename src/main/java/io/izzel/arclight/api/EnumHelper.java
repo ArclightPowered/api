@@ -79,7 +79,6 @@ public class EnumHelper {
             try {
                 Field field = Class.class.getDeclaredField(s);
                 offsets.add(Unsafe.objectFieldOffset(field));
-                System.out.println(field);
             } catch (NoSuchFieldException ignored) {
             }
         }
