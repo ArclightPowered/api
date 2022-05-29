@@ -75,7 +75,7 @@ public class EnumHelper {
 
     static {
         List<Long> offsets = new ArrayList<>();
-        for (var s : new String[]{"enumConstantDirectory", "enumConstants", "enumVars"}) {
+        for (String s : new String[]{"enumConstantDirectory", "enumConstants", "enumVars"}) {
             try {
                 Field field = Class.class.getDeclaredField(s);
                 offsets.add(Unsafe.objectFieldOffset(field));
@@ -85,7 +85,7 @@ public class EnumHelper {
         if (offsets.isEmpty()) {
             throw new IllegalStateException("Unable to find offsets for Enum");
         }
-        var arr = new long[offsets.size()];
+        long[] arr = new long[offsets.size()];
         for (int i = 0; i < arr.length; i++) {
             arr[i] = offsets.get(i);
         }

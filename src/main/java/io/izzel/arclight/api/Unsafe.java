@@ -1,7 +1,6 @@
 package io.izzel.arclight.api;
 
 import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.ClassWriter;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -9,7 +8,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.security.ProtectionDomain;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Objects;
 
 @SuppressWarnings("all")
@@ -288,7 +287,7 @@ public class Unsafe {
                 handle = MethodHandles.dropArguments(
                     lookup().findVirtual(ClassLoader.class, "defineClassInternal", MethodType.methodType(Class.class,
                         Class.class, String.class, byte[].class, ProtectionDomain.class, boolean.class, int.class, Object.class)),
-                    4, List.of(int.class, int.class));
+                    4, Arrays.asList(int.class, int.class));
             } catch (Throwable t2) {
                 handle = null;
             }
