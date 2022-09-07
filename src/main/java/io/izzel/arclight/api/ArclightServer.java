@@ -16,4 +16,10 @@ public interface ArclightServer {
      * @see Arclight#registerForgeEvent(Plugin, IEventBus, Object)
      */
     void registerForgeEvent(Plugin plugin, IEventBus eventBus, Object target);
+
+    /**
+     * @return ticking tracker
+     * @see Arclight#getTickingTracker()
+     */
+    TickingTracker getTickingTracker();
 }

@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'io.izzel.arclight'
-version '1.3.0'
+version '1.4.0'
 
 repositories {
     mavenCentral()
@@ -13,8 +13,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'org.ow2.asm:asm:9.2'
-    compileOnly 'org.ow2.asm:asm-tree:9.2'
+    compileOnly 'org.ow2.asm:asm:9.3'
+    compileOnly 'org.ow2.asm:asm-tree:9.3'
     compileOnly "org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT"
     compileOnly "net.minecraftforge:eventbus:4.0.0"
 }
