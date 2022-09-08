@@ -14,6 +14,14 @@ import javax.annotation.Nullable;
 public interface TickingTracker {
 
     /**
+     * Gets the currently ticking entity, block, etc.
+     *
+     * @return currently ticking object
+     */
+    @Nullable
+    Object getTickingSource();
+
+    /**
      * Gets the currently ticking entity.
      *
      * @return currently ticking entity if available
