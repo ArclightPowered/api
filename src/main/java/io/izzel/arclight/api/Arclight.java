@@ -24,6 +24,16 @@ public class Arclight {
         getServer().registerForgeEvent(plugin, eventBus, target);
     }
 
+    /**
+     * Gets the {@link TickingTracker} instance.
+     *
+     * @return the ticking tracker
+     * @since 1.4.0
+     */
+    public static TickingTracker getTickingTracker() {
+        return getServer().getTickingTracker();
+    }
+
     private static ArclightServer getServer() {
         return Objects.requireNonNull(server, "Server not set!");
     }
