@@ -11,16 +11,23 @@ public class ArclightVersion {
     public static final ArclightVersion v1_17_R1 = new ArclightVersion("1.17", 1170, "v1_17_R1");
     public static final ArclightVersion v1_18_R1 = new ArclightVersion("1.18", 1180, "v1_18_R1");
     public static final ArclightVersion v1_18_R2 = new ArclightVersion("1.18.2", 1182, "v1_18_R2");
-    public static final ArclightVersion v1_19_R1 = new ArclightVersion("1.19.1", 1191, "v1_19_R1");
+    public static final ArclightVersion v1_19_R1 = new ArclightVersion("1.19.1", 1191, "v1_19_R1", "Horn");
+    public static final ArclightVersion HORN = v1_19_R1;
 
     private final String name;
     private final int num;
     private final String pkg;
+    private final String releaseName;
 
     public ArclightVersion(String name, int num, String pkg) {
+        this(name, num, pkg, null);
+    }
+
+    public ArclightVersion(String name, int num, String pkg, String releaseName) {
         this.name = name;
         this.num = num;
         this.pkg = pkg;
+        this.releaseName = releaseName;
     }
 
     public String getName() {
@@ -31,11 +38,16 @@ public class ArclightVersion {
         return pkg;
     }
 
+    public String getReleaseName() {
+        return releaseName;
+    }
+
     @Override
     public String toString() {
         return "ArclightVersion{" +
             "name='" + name + '\'' +
             ", num=" + num +
+            ", releaseName='" + releaseName + '\'' +
             '}';
     }
 
