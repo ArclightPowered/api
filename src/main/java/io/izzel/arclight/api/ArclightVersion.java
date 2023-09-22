@@ -16,6 +16,7 @@ public class ArclightVersion {
     public static final ArclightVersion GREAT_HORN = new ArclightVersion("1.19.3", 1193, "v1_19_R2", "GreatHorn");
     public static final ArclightVersion EXECUTIONS = new ArclightVersion("1.19.4", 1194, "v1_19_R3", "Executions");
     public static final ArclightVersion TRIALS = new ArclightVersion("1.20", 1200, "v1_20_R1", "Trials");
+    public static final ArclightVersion NET = new ArclightVersion("1.20.2", 1202, "v1_20_R2", "Net");
 
     private final String name;
     private final int num;
