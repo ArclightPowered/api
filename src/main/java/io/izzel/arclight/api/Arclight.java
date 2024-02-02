@@ -34,6 +34,16 @@ public class Arclight {
         return getServer().getTickingTracker();
     }
 
+    /**
+     * Get current platform Arclight is running
+     *
+     * @return current platform
+     * @since 1.6.0
+     */
+    public static ArclightPlatform getPlatform() {
+        return getServer().getPlatform();
+    }
+
     private static ArclightServer getServer() {
         return Objects.requireNonNull(server, "Server not set!");
     }
