@@ -22,10 +22,4 @@ public interface ArclightServer {
      * @see Arclight#getTickingTracker()
      */
     TickingTracker getTickingTracker();
-
-    /**
-     * @return current platform
-     * @see Arclight#getPlatform()
-     */
-    ArclightPlatform getPlatform();
 }

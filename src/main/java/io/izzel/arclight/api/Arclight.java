@@ -41,7 +41,7 @@ public class Arclight {
      * @since 1.6.0
      */
     public static ArclightPlatform getPlatform() {
-        return getServer().getPlatform();
+        return ArclightPlatform.current();
     }
 
     private static ArclightServer getServer() {
