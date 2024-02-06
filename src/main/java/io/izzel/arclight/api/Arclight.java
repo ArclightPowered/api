@@ -19,9 +19,21 @@ public class Arclight {
     /**
      * @param target Either a {@link Class} instance or an arbitrary object
      * @see IEventBus#register(Object)
+     * @deprecated Use {@link Arclight#registerModEvent(Plugin, Object, Object)} instead.
      */
+    @Deprecated
     public static void registerForgeEvent(Plugin plugin, IEventBus eventBus, Object target) {
         getServer().registerForgeEvent(plugin, eventBus, target);
+    }
+
+    /**
+     * Register a mod event handler.
+     *
+     * @param target Either a {@link Class} instance or an arbitrary object.
+     * @since 1.6.2
+     */
+    public static void registerModEvent(Plugin plugin, Object eventBus, Object target) {
+        getServer().registerModEvent(plugin, eventBus, target);
     }
 
     /**
