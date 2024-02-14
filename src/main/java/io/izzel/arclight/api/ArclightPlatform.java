@@ -6,7 +6,8 @@ package io.izzel.arclight.api;
 public enum ArclightPlatform {
     VANILLA,
     FORGE,
-    NEOFORGE;
+    NEOFORGE,
+    FABRIC;
 
     private static ArclightPlatform platform;
 
