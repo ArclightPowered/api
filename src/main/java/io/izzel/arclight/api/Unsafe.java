@@ -241,12 +241,30 @@ public class Unsafe {
         return unsafe.staticFieldBase(field);
     }
 
-    public static boolean shouldBeInitialized(Class<?> aClass) {
-        return unsafe.shouldBeInitialized(aClass);
+    private static final MethodHandle H_ENSURE_CLASS_INITIALIZED;
+
+    static {
+        MethodHandle handle;
+        try {
+            handle = lookup().findVirtual(MethodHandles.Lookup.class, "ensureInitialized", MethodType.methodType(Class.class, Class.class))
+                .bindTo(lookup()).asType(MethodType.methodType(void.class, Class.class));
+        } catch (Throwable t) {
+            try {
+                handle = lookup().findVirtual(sun.misc.Unsafe.class, "ensureClassInitialized", MethodType.methodType(void.class, Class.class))
+                    .bindTo(unsafe);
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
+        }
+        H_ENSURE_CLASS_INITIALIZED = handle;
     }
 
     public static void ensureClassInitialized(Class<?> aClass) {
-        unsafe.ensureClassInitialized(aClass);
+        try {
+            H_ENSURE_CLASS_INITIALIZED.invokeExact(aClass);
+        } catch (Throwable e) {
+            throwException(e);
+        }
     }
 
     public static int arrayBaseOffset(Class<?> aClass) {
@@ -289,7 +307,12 @@ public class Unsafe {
                         Class.class, String.class, byte[].class, ProtectionDomain.class, boolean.class, int.class, Object.class)),
                     4, Arrays.asList(int.class, int.class));
             } catch (Throwable t2) {
-                handle = null;
+                try {
+                    handle = lookup().findVirtual(sun.misc.Unsafe.class, "defineAnonymousClass", MethodType.methodType(Class.class, Class.class, byte[].class, Object[].class))
+                        .bindTo(unsafe);
+                } catch (Throwable t3) {
+                    throw new RuntimeException(t);
+                }
             }
         }
         H_DEF_CLASS = handle;
@@ -300,16 +323,12 @@ public class Unsafe {
     }
 
     public static Class<?> defineAnonymousClass(Class<?> aClass, byte[] bytes, Object[] objects) {
-        if (H_DEF_CLASS != null) {
-            try {
-                return (Class<?>) H_DEF_CLASS.invokeExact(aClass.getClassLoader(), aClass, new ClassReader(bytes).getClassName(),
-                    bytes, 0, bytes.length, aClass.getProtectionDomain(), false, 11, (Object) objects);
-            } catch (Throwable t) {
-                throwException(t);
-                return null;
-            }
-        } else {
-            return unsafe.defineAnonymousClass(aClass, bytes, objects);
+        try {
+            return (Class<?>) H_DEF_CLASS.invokeExact(aClass.getClassLoader(), aClass, new ClassReader(bytes).getClassName(),
+                bytes, 0, bytes.length, aClass.getProtectionDomain(), false, 11, (Object) objects);
+        } catch (Throwable t) {
+            throwException(t);
+            return null;
         }
     }
 
@@ -476,7 +495,7 @@ public class Unsafe {
         if (securityManagerPresent) {
             INSTANCE = new SecurityManagerCallerClass();
         } else {
-            INSTANCE = new StackWalkerCallerClassimplements();
+            INSTANCE = new StackWalkerCallerClass();
         }
     }
 
@@ -493,7 +512,7 @@ public class Unsafe {
         }
     }
 
-    private static class StackWalkerCallerClassimplements implements CallerClass {
+    private static class StackWalkerCallerClass implements CallerClass {
 
         private final StackWalker walker = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 
