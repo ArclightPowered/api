@@ -23,7 +23,7 @@ public class Unsafe {
             Field theUnsafe = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
             theUnsafe.setAccessible(true);
             unsafe = (sun.misc.Unsafe) theUnsafe.get(null);
-            Unsafe.ensureClassInitialized(MethodHandles.Lookup.class);
+            MethodHandles.lookup();
             Field field = MethodHandles.Lookup.class.getDeclaredField("IMPL_LOOKUP");
             Object base = unsafe.staticFieldBase(field);
             long offset = unsafe.staticFieldOffset(field);
