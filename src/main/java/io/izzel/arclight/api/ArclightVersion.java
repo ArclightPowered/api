@@ -19,6 +19,7 @@ public class ArclightVersion {
     public static final ArclightVersion NET = new ArclightVersion("1.20.2", 1202, "v1_20_R2", "Net");
     public static final ArclightVersion WHISPER = new ArclightVersion("1.20.4", 1204, "v1_20_R3", "Whisper");
     public static final ArclightVersion PILLARS = new ArclightVersion("1.20.6", 1206, "v1_20_R4", "Pillars");
+    public static final ArclightVersion FEUDAL_KINGS = new ArclightVersion("1.21", 1210, "v1_21_R1", "FeudalKings");
 
     private final String name;
     private final int num;
