@@ -13,7 +13,7 @@ public class EnumHelper {
     public static <T> T addEnum(Class<T> cl, String name, List<Class<?>> ctorTypes, List<Object> ctorParams) {
         try {
             Unsafe.ensureClassInitialized(cl);
-            Field field = cl.getDeclaredField("ENUM$VALUES");
+            Field field = enumValuesField(cl);
             Object base = Unsafe.staticFieldBase(field);
             long offset = Unsafe.staticFieldOffset(field);
             T[] arr = (T[]) Unsafe.getObject(base, offset);
@@ -32,10 +32,25 @@ public class EnumHelper {
         }
     }
 
+    private static <T> Field enumValuesField(Class<T> cl) throws NoSuchFieldException {
+        Field field;
+        try {
+            field = cl.getDeclaredField("$VALUES");
+        } catch (NoSuchFieldException e) {
+            field = cl.getDeclaredField("ENUM$VALUES");
+        }
+        return field;
+    }
+
     @SuppressWarnings("unchecked")
     public static <T> void addEnums(Class<T> cl, List<T> list) {
         try {
-            Field field = cl.getDeclaredField("ENUM$VALUES");
+            Field field;
+            try {
+                field = cl.getDeclaredField("$VALUES");
+            } catch (NoSuchFieldException e) {
+                field = cl.getDeclaredField("ENUM$VALUES");
+            }
             Object base = Unsafe.staticFieldBase(field);
             long offset = Unsafe.staticFieldOffset(field);
             T[] arr = (T[]) Unsafe.getObject(base, offset);
