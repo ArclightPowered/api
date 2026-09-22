@@ -22,6 +22,11 @@ public class ArclightVersion {
     public static final ArclightVersion FEUDAL_KINGS = new ArclightVersion("1.21", 1210, "v1_21_R1", "FeudalKings");
     public static final ArclightVersion HEART = new ArclightVersion("1.21.3", 1213, "v1_21_R2", "Heart");
 
+    /** 积卒 / Group of soldiers — Minecraft 1.21.11. */
+    public static final ArclightVersion GROUP_OF_SOLDIERS = new ArclightVersion("1.21.11", 12111, "v1_21_R7", "GroupOfSoldiers");
+    /** 斗 / Dipper — Minecraft 26.1.2; CraftBukkit no longer uses a versioned package. */
+    public static final ArclightVersion DIPPER = new ArclightVersion("26.1.2", 26102, "", "Dipper");
+
     private final String name;
     private final int num;
     private final String pkg;
